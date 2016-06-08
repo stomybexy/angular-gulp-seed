@@ -79,7 +79,6 @@ gulp.task('build-template-cache', ['clean'], function() {
                 var mod =  folder.replace(/-[a-z]/g, function(match) {
                     return match.substr(1).toUpperCase();
                 });
-                console.log(mod);
                 return mod;
             },
             declareModule: false,
@@ -96,7 +95,7 @@ gulp.task('build-template-cache', ['clean'], function() {
 /////////////////////////////////////////////////////////////////////////////////////
 
 gulp.task('jshint', function() {
-    gulp.src('/components/**/*.js')
+    gulp.src(['/components/**/*.js', '/services/**/*.js'])
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
@@ -109,7 +108,8 @@ gulp.task('jshint', function() {
 
 gulp.task('test', ['build-js'], function() {
     var testFiles = [
-        '/components/**/*.test.js'
+        '/components/**/*.test.js',
+        '/services/**/*.test.js'
     ];
 
     return gulp.src(testFiles)
@@ -134,7 +134,7 @@ gulp.task('build-js', ['clean'], function() {
     var b = browserify({
         entries: './app.js',
         debug: true,
-        paths: ['./components'],
+        paths: ['./services', './components'],
         transform: [ngAnnotate]
     });
 
@@ -172,7 +172,7 @@ gulp.task('build', ['clean', 'bower', 'build-css', 'build-template-cache', 'jshi
 /////////////////////////////////////////////////////////////////////////////////////
 
 gulp.task('watch', function() {
-    return gulp.watch(['./index.html', './components/**/*.html', './components/**/*.js', './styles/*.*css', './*.js'], ['build']);
+    return gulp.watch(['./index.html', './components/**/*.html', './components/**/*.js', './services/**/*.js','./styles/*.*css', './*.js'], ['build']);
 });
 
 /////////////////////////////////////////////////////////////////////////////////////

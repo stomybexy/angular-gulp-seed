@@ -3,10 +3,13 @@
 
   var angular = require('angular');
 
-  require('todosList/todosList');
+  require('angular-ui-router');
+
+
+  require('main/main');
 
   require('./dist/templateCachePartials');
 
 
-  angular.module('todoApp', ['todosList'])
+  angular.module('todoApp', ['main'])
 })();
