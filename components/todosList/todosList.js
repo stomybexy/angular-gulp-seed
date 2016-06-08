@@ -19,12 +19,8 @@
         text: 'Be awesome at my job interview'
       },
       {
-        text: 'Get hired in Paris'
-      },
-      {
-        text: 'Go rejoin my beautiful Julie'
+        text: 'Get hired'
       }
     ];
   }
-  console.log('This is awesome!');
 })();
