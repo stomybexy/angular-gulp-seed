@@ -1,14 +1,15 @@
 <!doctype html>
 <html lang="en">
 	<head>
+		<base href="/">
 		<meta charset="utf-8">
 		<title>AngularJS • Todos</title>
 		<link rel="stylesheet" href="app.css">
 	</head>
 	<body>
-
 		<div ng-app="todoApp">
-			<todos-list></todos-list>
+			<aside>Navigation</aside>
+			<div ui-view></div>
 		</div>
 
         <script src="js/bundle.js"></script>

@@ -1,5 +1,4 @@
 var gulp = require('gulp'),
-    webserver = require('gulp-webserver'),
     del = require('del'),
     sass = require('gulp-sass'),
     karma = require('gulp-karma'),
@@ -11,7 +10,10 @@ var gulp = require('gulp'),
     buffer = require('vinyl-buffer'),
     uglify = require('gulp-uglify'),
     gutil = require('gulp-util'),
-    ngAnnotate = require('browserify-ngannotate');
+    ngAnnotate = require('browserify-ngannotate'),
+    browserSync = require('browser-sync'),
+    reload = browserSync.reload,
+    historyApiFallback = require('connect-history-api-fallback');
 
 var CacheBuster = require('gulp-cachebust');
 var cachebust = new CacheBuster();
@@ -172,8 +174,10 @@ gulp.task('build', ['clean', 'bower', 'build-css', 'build-template-cache', 'jshi
 /////////////////////////////////////////////////////////////////////////////////////
 
 gulp.task('watch', function() {
-    return gulp.watch(['./index.html', './components/**/*.html', './components/**/*.js', './services/**/*.js','./styles/*.*css', './*.js'], ['build']);
+    return gulp.watch(['./index.html', './components/**/*.html', './components/**/*.js', './services/**/*.js','./styles/*.*css', './*.js'], ['reload']);
 });
+
+gulp.task('reload', ['build'], reload);
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -181,13 +185,58 @@ gulp.task('watch', function() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
+// gulp.task('webserver', ['watch', 'build'], function() {
+//     gulp.src('./dist')
+//         .pipe(webserver({
+//             livereload: true,
+//             directoryListing: false,
+//             // open: "http://localhost:8000/",
+//             fallback: 'index.html'
+//         }));
+// });
+
+// gulp.task('webserver', ['watch', 'build'], function () {
+//   var server = serverFactory.create({
+//     path: './dist',
+//     port: 8000,
+//     fallback: 'index.html'
+//   });
+//
+//   server.start();
+// });
+
+gulp.task('webserver',['watch', 'build'], function() {
+  gulp.src('./dist')
+    .pipe(server({
+      livereload: true,
+      directoryListing: false,
+      open: false,
+      fallback: 'index.html'
+    }));
+});
+
 gulp.task('webserver', ['watch', 'build'], function() {
-    gulp.src('./dist')
-        .pipe(webserver({
-            livereload: true,
-            directoryListing: true,
-            open: "http://localhost:8000/index.html"
-        }));
+  browserSync({
+    port: 8000,
+    notify: false,
+    logPrefix: 'NG-SEED',
+    // snippetOptions: {
+    //   rule: {
+    //     match: '<span id="browser-sync-binding"></span>',
+    //     fn: function(snippet) {
+    //       return snippet;
+    //     }
+    //   }
+    // },
+    // Run as an https by uncommenting 'https: true'
+    // Note: this uses an unsigned certificate which on first access
+    //       will present a certificate warning in the browser.
+    // https: true,
+    server: {
+      baseDir: ["dist"],
+      middleware: [historyApiFallback()]
+    }
+  });
 });
 
 

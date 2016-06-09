@@ -6,8 +6,10 @@
   },
   "devDependencies": {
     "angular-mocks": "^1.5.6",
+    "browser-sync": "^2.13.0",
     "browserify": "^13.0.1",
     "browserify-ngannotate": "^2.0.0",
+    "connect-history-api-fallback": "^1.2.0",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-cachebust": "0.0.6",
@@ -20,7 +22,6 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
-    "gulp-webserver": "^0.9.1",
     "gulp.spritesmith": "^6.2.1",
     "jasmine-core": "^2.4.1",
     "jshint": "^2.9.2",
