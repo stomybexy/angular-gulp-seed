@@ -1,7 +1,6 @@
 var gulp = require('gulp'),
     del = require('del'),
     sass = require('gulp-sass'),
-    karma = require('gulp-karma'),
     jshint = require('gulp-jshint'),
     sourcemaps = require('gulp-sourcemaps'),
     spritesmith = require('gulp.spritesmith'),
@@ -13,7 +12,10 @@ var gulp = require('gulp'),
     ngAnnotate = require('browserify-ngannotate'),
     browserSync = require('browser-sync'),
     reload = browserSync.reload,
-    historyApiFallback = require('connect-history-api-fallback');
+    historyApiFallback = require('connect-history-api-fallback'),
+    KarmaServer = require('karma').Server,
+    watch = require('gulp-watch'),
+    batch = require('gulp-batch');
 
 var CacheBuster = require('gulp-cachebust');
 var cachebust = new CacheBuster();
@@ -108,21 +110,30 @@ gulp.task('jshint', function() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('test', ['build-js'], function() {
-    var testFiles = [
-        '/components/**/*.test.js',
-        '/services/**/*.test.js'
-    ];
+// gulp.task('test', ['build-js', 'build-template-cache'], function() {
+//     var testFiles = [
+//         '/components/**/*.test.js',
+//         '/services/**/*.test.js'
+//     ];
+//
+//     return gulp.src(testFiles)
+//         .pipe(karma({
+//             configFile: 'karma.conf.js',
+//             action: 'run'
+//         }))
+//         .on('error', function(err) {
+//             console.log('karma tests failed: ' + err);
+//             throw err;
+//         });
+// });
 
-    return gulp.src(testFiles)
-        .pipe(karma({
-            configFile: 'karma.conf.js',
-            action: 'run'
-        }))
-        .on('error', function(err) {
-            console.log('karma tests failed: ' + err);
-            throw err;
-        });
+/**
+ * Watch for file changes and re-run tests on each change
+ */
+gulp.task('tdd', ['build-js', 'build-template-cache'],function (done) {
+  new KarmaServer({
+    configFile: __dirname + '/karma.conf.js'
+  }, done).start();
 });
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -160,7 +171,7 @@ gulp.task('build-js', ['clean'], function() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('build', ['clean', 'bower', 'build-css', 'build-template-cache', 'jshint', 'build-js'], function() {
+gulp.task('build', ['clean', 'bower', 'build-css', 'build-template-cache', 'jshint', 'build-js', 'tdd'], function() {
     return gulp.src('index.html')
         .pipe(cachebust.references())
         .pipe(gulp.dest('dist'));
@@ -174,7 +185,10 @@ gulp.task('build', ['clean', 'bower', 'build-css', 'build-template-cache', 'jshi
 /////////////////////////////////////////////////////////////////////////////////////
 
 gulp.task('watch', function() {
-    return gulp.watch(['./index.html', './components/**/*.html', './components/**/*.js', './services/**/*.js','./styles/*.*css', './*.js'], ['reload']);
+    watch(['./index.html', './components/**/*.html', './components/**/*.js', './services/**/*.js','./styles/*.*css', './*.js', './components/**',
+     '/services/**'], batch(function (events, done) {
+        gulp.start('reload', done);
+    }));
 });
 
 gulp.task('reload', ['build'], reload);
@@ -204,16 +218,16 @@ gulp.task('reload', ['build'], reload);
 //
 //   server.start();
 // });
-
-gulp.task('webserver',['watch', 'build'], function() {
-  gulp.src('./dist')
-    .pipe(server({
-      livereload: true,
-      directoryListing: false,
-      open: false,
-      fallback: 'index.html'
-    }));
-});
+//
+// gulp.task('webserver',['watch', 'build'], function() {
+//   gulp.src('./dist')
+//     .pipe(server({
+//       livereload: true,
+//       directoryListing: false,
+//       open: false,
+//       fallback: 'index.html'
+//     }));
+// });
 
 gulp.task('webserver', ['watch', 'build'], function() {
   browserSync({

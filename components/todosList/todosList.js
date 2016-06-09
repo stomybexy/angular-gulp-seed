@@ -1,6 +1,7 @@
 (function(){
   'use strict';
 
+
   var angular = require('angular');
 
   require('angular-ui-router');
@@ -25,7 +26,7 @@
 
   }
 
-  
+
 
   function todosList(todoService){
     'ngInject';

@@ -20,6 +20,4 @@
       $urlRouterProvider.otherwise('/');
     }
 
-
-
 })();
