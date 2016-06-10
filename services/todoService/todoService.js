@@ -17,6 +17,9 @@
             var service = {
                 allTodos: function() {
                     return todos;
+                },
+                addTodo: function(todo){
+                  todos.push(todo);
                 }
             };
             return service;
