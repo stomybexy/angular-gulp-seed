@@ -78,7 +78,7 @@ gulp.task('build-template-cache', ['clean'], function() {
     return gulp.src("./components/**/*.html")
         .pipe(ngHtml2Js({
             moduleName: function(file) {
-                var pathParts = file.path.split('/');
+                var pathParts = file.path.split(/[/\\]/g);
                 var folder = pathParts[pathParts.length - 2];
                 var mod =  folder.replace(/-[a-z]/g, function(match) {
                     return match.substr(1).toUpperCase();
