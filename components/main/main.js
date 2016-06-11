@@ -2,14 +2,13 @@
   'use strict';
   var angular = require('angular');
 
-  
   require('angular-ui-router');
 
-  require('todosList/todosList');
+  require('todosManager/todosManager');
 
   var name = "main";
 
-  angular.module(name, ['todosList', 'ui.router']).component(name, {
+  angular.module(name, ['todosManager', 'ui.router']).component(name, {
     templateUrl: '/components/main/main.html'
   }).config(config);
 
@@ -19,7 +18,7 @@
       $stateProvider.state('main', {
           template: '<main></main>',
           url: '/'
-      })
+      });
 
   }
 
