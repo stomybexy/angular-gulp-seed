@@ -3,6 +3,7 @@
   "dependencies": {
     "angular": "^1.5.6",
     "angular-ui-router": "^0.3.1",
+    "protractor": "^3.3.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -35,5 +36,11 @@
     "phantomjs-prebuilt": "^2.1.7",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "scripts": {
+    "preupdate-webdriver": "npm install",
+    "update-webdriver": "webdriver-manager update",
+    "preprotractor": "npm run update-webdriver",
+    "protractor": "protractor protractor.conf.js"
   }
 }

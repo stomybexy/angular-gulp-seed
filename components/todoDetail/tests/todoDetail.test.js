@@ -12,12 +12,12 @@ describe('todoDetail controller', function(){
      todo =  {
          text: 'Be awesome at my job interview'
      };
-
    }));
 
   it('should hold a todo model', function(){
     component = $componentController('todoDetail', null, {todo: todo});
     expect(component.todo.text).toBe('Be awesome at my job interview');
   });
+
 
 });

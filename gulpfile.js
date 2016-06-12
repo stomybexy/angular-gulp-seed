@@ -130,7 +130,7 @@ gulp.task('jshint', function() {
 /**
  * Watch for file changes and re-run tests on each change
  */
-gulp.task('tdd', ['build-js', 'build-template-cache'],function (done) {
+gulp.task('tdd', ['build'],function (done) {
   new KarmaServer({
     configFile: __dirname + '/karma.conf.js'
   }, done).start();
@@ -171,7 +171,7 @@ gulp.task('build-js', ['clean'], function() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('build', ['clean', 'bower', 'build-css', 'build-template-cache', 'jshint', 'build-js', 'tdd'], function() {
+gulp.task('build', ['clean', 'bower', 'build-css', 'build-template-cache', 'jshint', 'build-js'], function() {
     return gulp.src('index.html')
         .pipe(cachebust.references())
         .pipe(gulp.dest('dist'));
@@ -185,13 +185,21 @@ gulp.task('build', ['clean', 'bower', 'build-css', 'build-template-cache', 'jshi
 /////////////////////////////////////////////////////////////////////////////////////
 
 gulp.task('watch', function() {
-    watch(['./index.html', './components/**/*.html', './components/**/*.js', './services/**/*.js','./styles/*.*css', './*.js', './components/**',
-     '/services/**'], batch(function (events, done) {
+    // watch(['./index.html', './components/**/*.html', './components/**/*.js', './services/**/*.js','./styles/*.*css', './*.js', './components/**',
+    //  '/services/**','!components/**/tests', '!components/**/tests/**/*', '!services/**/tests/**/*', '!services/**/tests'], batch(function (events, done) {
+    //     gulp.start('reload', done);
+    // }));
+    watch(['./index.html', './{components, services}/**', './styles/*.*css',
+    './app.js','!{components, services}/**/{tests, tests/**}'], batch(function (events, done) {
         gulp.start('reload', done);
+    }));
+
+    watch(['{components, services}/**/tests/*.test.js', './karma.conf.js'], batch(function (events, done) {
+        gulp.start('tdd', done);
     }));
 });
 
-gulp.task('reload', ['build'], reload);
+gulp.task('reload', ['build', 'tdd'], reload);
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -229,7 +237,7 @@ gulp.task('reload', ['build'], reload);
 //     }));
 // });
 
-gulp.task('webserver', ['watch', 'build'], function() {
+gulp.task('webserver', ['watch', 'build', 'tdd'], function() {
   browserSync({
     port: 8000,
     notify: false,

@@ -10,7 +10,9 @@ module.exports = function (config) {
             'dist/*.js',
             'node_modules/angular-mocks/angular-mocks.js',
             'components/**/*.test.js',
-            'services/**/*.test.js'
+            'services/**/*.test.js',
+						{ pattern: 'components/**/*.e2e.js', watched: false, included: false, served: false },
+						{ pattern: 'services/**/*.e2e.js', watched: false, included: false, served: false },
 		],
 		autoWatch: true,
 		singleRun: true,
