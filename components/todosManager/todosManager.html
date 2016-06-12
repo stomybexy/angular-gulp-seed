@@ -1,0 +1,5 @@
+<form name="form" ng-submit="todosManager.addTodo(todosManager.newTodoText)">
+  <input placeholder="new todo" ng-model="todosManager.newTodoText" type="text" name="newTodoText">
+</form>
+
+<todos-list todos="todosManager.todos" on-toggle-done="todosManager.toggleDone(todo)"></todos-list>

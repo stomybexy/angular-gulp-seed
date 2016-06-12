@@ -30,12 +30,10 @@
                   todos.length = 0;
                   todos.push.apply(todos, todosTemp);
                 },
-                setDone: function(todo){
-                  todo.done = true;
+                toggleDone: function(todo){
+                  // TODO: call backend and reverts in case of failing
                 },
-                setNotDone: function(todo){
-                  todo.done = false;
-                },
+
                 clearCompleted: function(todo){
                   var todosTemp = _.reject(todos, function(task){
                     return task.done === true;

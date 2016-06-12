@@ -33,24 +33,28 @@ describe('todoService', function(){
       expect(todoService.allTodos().length).toBe(todoLength - 1);
     });
   });
-  describe('setDone', function(){
-    it("should set a todo's done property to true", function(){
+  describe('toggleDone', function(){
+    it("should set a todo's done property to its opposite", function(){
       var todos = todoService.allTodos();
       var todo = todos[0];
 
-      todoService.setDone(todo);
+      todo.done = true;
+
+      todoService.toggleDone(todo);
+
       expect(todo.done).toBe(true);
-    });
-  });
-  describe('setNotDone', function(){
-    it("should set a todo's done property to false", function(){
-      var todos = todoService.allTodos();
-      var todo = todos[0];
 
-      todoService.setNotDone(todo);
-      expect(todo.done).toBe(false);
     });
   });
+  // describe('setNotDone', function(){
+  //   it("should set a todo's done property to false", function(){
+  //     var todos = todoService.allTodos();
+  //     var todo = todos[0];
+  //
+  //     todoService.setNotDone(todo);
+  //     expect(todo.done).toBe(false);
+  //   });
+  // });
   describe('clearCompleted', function(){
     it("should remove todos whose done property is set to true", function(){
       var todos = todoService.allTodos();
