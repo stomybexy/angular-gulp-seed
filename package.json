@@ -3,7 +3,6 @@
   "dependencies": {
     "angular": "^1.5.6",
     "angular-ui-router": "^0.3.1",
-    "protractor": "^3.3.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -34,13 +33,16 @@
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
     "phantomjs-prebuilt": "^2.1.7",
+    "protractor": "^3.3.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
+    "test": "node_modules/.bin/gulp tdd",
+    "start": "node_modules/.bin/gulp webserver",
     "preupdate-webdriver": "npm install",
-    "update-webdriver": "webdriver-manager update",
+    "update-webdriver": "node_modules/.bin/webdriver-manager update",
     "preprotractor": "npm run update-webdriver",
-    "protractor": "protractor protractor.conf.js"
+    "protractor": "node_modules/.bin/protractor protractor.conf.js --browser=firefox"
   }
 }

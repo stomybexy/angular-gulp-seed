@@ -99,7 +99,7 @@ gulp.task('build-template-cache', ['clean'], function() {
 /////////////////////////////////////////////////////////////////////////////////////
 
 gulp.task('jshint', function() {
-    gulp.src(['/components/**/*.js', '/services/**/*.js'])
+    gulp.src(['/{components, services}/**/*.js'])
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
