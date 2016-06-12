@@ -1,4 +1,5 @@
-# angular-gulp-seed
+# angular-gulp-seed [![Build Status](https://travis-ci.org/stomybexy/angular-gulp-seed.svg?branch=master)](https://travis-ci.org/stomybexy/angular-gulp-seed)
+
 
 ## Installation
 
