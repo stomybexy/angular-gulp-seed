@@ -2,3 +2,4 @@
     <input type="checkbox" ng-model="todoDetail.todo.done" ng-change='todoDetail.onToggleDone({todo:todoDetail.todo })'>
            {{todoDetail.todo.text}}
 </label>
+<button ng-click="todoDetail.onRemove({todo: todoDetail.todo})">x</button>

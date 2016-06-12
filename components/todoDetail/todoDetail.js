@@ -10,7 +10,9 @@
     controllerAs: name,
     bindings: {
       todo: '<',
-      onToggleDone: '&'
+      onToggleDone: '&',
+      onRemove: '&'
     }
   });
+
 })();

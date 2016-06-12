@@ -1,5 +1,8 @@
-<form name="form" ng-submit="todosManager.addTodo(todosManager.newTodoText)">
-  <input placeholder="new todo" ng-model="todosManager.newTodoText" type="text" name="newTodoText">
+<button ng-disabled="todosManager.clearCompletedDisabled()" ng-click="todosManager.clearCompleted()">Clear completed</button>
+<form id="newTodoForm" name="newTodoForm" ng-submit="todosManager.addTodo(todosManager.newTodoText)">
+  <input placeholder="new todo" ng-model="todosManager.newTodoText" type="text" name="newTodoText" autocomplete="off">
 </form>
 
-<todos-list todos="todosManager.todos" on-toggle-done="todosManager.toggleDone(todo)"></todos-list>
+<todos-list todos="todosManager.todos" on-toggle-done="todosManager.toggleDone(todo)"
+        on-remove-todo="todosManager.removeTodo(todo)">
+</todos-list>

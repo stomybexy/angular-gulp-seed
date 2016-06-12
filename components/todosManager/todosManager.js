@@ -3,6 +3,8 @@
 
   var angular = require('angular');
 
+  var _ = require('underscore');
+
   require('angular-ui-router');
 
   require('todoService/todoService');
@@ -31,7 +33,7 @@
     this.todos = todoService.allTodos();
 
     this.toggleDone = function(todo){
-      console.log('toggleDone:' , todo);
+      todoService.toggleDone(todo);
     }
 
     this.addTodo = function(newTodoText){
@@ -39,6 +41,18 @@
         text: newTodoText
       });
       this.newTodoText = "";
+    }
+
+    this.removeTodo = function(todo){
+      todoService.removeTodo(todo);
+    }
+
+    this.clearCompleted = function(){
+      todoService.clearCompleted();
+    }
+
+    this.clearCompletedDisabled = function(){
+      return !_.findWhere(this.todos, {done: true});
     }
   }
 

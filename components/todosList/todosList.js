@@ -13,14 +13,18 @@
     controller: todosListCtrl,
     bindings: {
       todos: '<',
-      onToggleDone: '&'
+      onToggleDone: '&',
+      onRemoveTodo: '&'
     }
   });
 
   function todosListCtrl(){
-    var self = this;
     this.toggleDone = function(todo){
-      self.onToggleDone({todo: todo});
+      this.onToggleDone({todo: todo});
+    }
+
+    this.removeTodo = function(todo){
+      this.onRemoveTodo({todo: todo});
     }
   }
 })();

@@ -1,5 +1,5 @@
 <section>
   <div ng-repeat="todo in todosList.todos">
-    <todo-detail todo="todo" on-toggle-done="todosList.toggleDone(todo)"></todo-detail>
+    <todo-detail todo="todo" on-remove="todosList.removeTodo(todo)" on-toggle-done="todosList.toggleDone(todo)"></todo-detail>
   </div>
 </section>
