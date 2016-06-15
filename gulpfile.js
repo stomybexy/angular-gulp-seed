@@ -27,11 +27,59 @@ var cachebust = new CacheBuster();
 /////////////////////////////////////////////////////////////////////////////////////
 
 gulp.task('clean', function() {
-    del.sync([
+    return del([
         'dist'
     ]);
-
 });
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// cleans the css build output
+//
+/////////////////////////////////////////////////////////////////////////////////////
+
+gulp.task('clean-css', function() {
+    return del([
+        'dist/**/*.css', 'dist/**/*.css.map'
+    ]);
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// cleans the js build output
+//
+/////////////////////////////////////////////////////////////////////////////////////
+
+gulp.task('clean-js', function() {
+    return del([
+        'dist/js/**'
+    ]);
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// cleans the template cache build output
+//
+/////////////////////////////////////////////////////////////////////////////////////
+
+gulp.task('clean-tpl-js', function() {
+    return del([
+        'dist/templateCachePartials.js'
+    ]);
+});
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// cleans index.html build
+//
+/////////////////////////////////////////////////////////////////////////////////////
+
+gulp.task('clean-page', function() {
+    return del([
+        'dist/index.html'
+    ]);
+});
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -53,7 +101,7 @@ gulp.task('bower', function() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('build-css', ['clean'], function() {
+gulp.task('build-css', ['clean-css'], function() {
     return gulp.src('./styles/*')
         .pipe(sourcemaps.init())
         .pipe(sass())
@@ -70,7 +118,7 @@ gulp.task('build-css', ['clean'], function() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('build-template-cache', ['clean'], function() {
+gulp.task('build-template-cache', ['clean-tpl-js'], function() {
 
     var ngHtml2Js = require("gulp-ng-html2js"),
         concat = require("gulp-concat");
@@ -143,7 +191,7 @@ gulp.task('tdd', ['build'],function (done) {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('build-js', ['clean'], function() {
+gulp.task('build-js', ['clean-js', 'build-template-cache'], function() {
     var b = browserify({
         entries: './app.js',
         debug: true,
@@ -164,6 +212,16 @@ gulp.task('build-js', ['clean'], function() {
         .pipe(gulp.dest('./dist/js/'));
 });
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// Build index.html
+//
+/////////////////////////////////////////////////////////////////////////////////////
+gulp.task('build-page', ['clean-page','build-css', 'build-js'] ,function(){
+  return gulp.src('index.html')
+      .pipe(cachebust.references())
+      .pipe(gulp.dest('dist'));
+})
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -171,7 +229,7 @@ gulp.task('build-js', ['clean'], function() {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('build', ['clean', 'bower', 'build-css', 'build-template-cache', 'jshint', 'build-js'], function() {
+gulp.task('build', ['bower', 'build-css', 'build-template-cache', 'jshint', 'build-js'], function() {
     return gulp.src('index.html')
         .pipe(cachebust.references())
         .pipe(gulp.dest('dist'));
